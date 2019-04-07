@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>后台登录</title>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="./../../admin/layui/css/layui.css">
+    <script src="./../../admin/layui/layui.js"></script>
+    <!-- //for-mobile-apps -->
+    <link href="../../admin/css/style.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+    <!-- main -->
+    <div class="main">
+        <h1>
+            后台登录系统
+        </h1>
+        <form>
+            <input type="text" name="u_name" placeholder="用户名" required="">
+            <input type="password" name="u_pwd" placeholder="密码" required="">
+            <input type="submit" value="登录"> 
+        </form>
+    </div>
+    <!-- //main -->
+</body>
+</html>
+<script>
+    layui.use('jquery',function(){
+        let $=layui.jquery;
+        $('form').submit(function(){
+            $.ajax({
+                url: "./login",
+                type: "post",
+                data: $('form').serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if(res.status===1){
+                        location.href='./index';
+                    }
+                }
+            });
+            return false;
+        })
+    });
+</script>

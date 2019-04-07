@@ -1,0 +1,5 @@
+@import "./../layui/css/layui.css";
+html,body{
+    width: 97%;
+    margin: 0 auto;
+}
