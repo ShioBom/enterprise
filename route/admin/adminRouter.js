@@ -2,6 +2,7 @@ import express from 'express';
 import dbhelper from '../../lib/dbhelper';
 import indexController from '../../controller/indexController';
 import menuController from '../../controller/menuController';
+import limitsController from "../../controller/limitsController";
 let adminRouter = express.Router();
 module.exports = adminRouter;
 //监听路由，任何路径首先都要进入登录界面
@@ -17,6 +18,12 @@ adminRouter.get(
   "/index",
   indexController.indexController()
 );
+//权限页面导航
+adminRouter.get("/power_limits", limitsController.powerLimits());
+//权限页面获取菜单
+adminRouter.get("/getMenus", limitsController.getMenus());
+//添加或者修改菜单权限
+adminRouter.post("/addOrUpdate", limitsController.addOrUpdate());
 //渲染menu内容
 adminRouter.get("/menu", menuController.showMenu());
 //menu接口,查询menu数据

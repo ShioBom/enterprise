@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./../../admin/layui/css/layui.css">
+    <link rel="stylesheet" href="./../../admin/css/power_limits.css">
+    <script src="./../../admin/layui/layui.js"></script>
+    <script src="./../../admin/js/layui-xtree.js"></script>
+</head>
+<body>
+    <form class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-md4">
+               <h2>用户管理</h2>
+               <ul>
+                   <%roles.forEach(ele=>{%>
+                        <li data-role_id="<%=ele.r_id%>"><%=ele.role%></li>
+                  <%})%>
+               </ul>
+            </div>
+            <div class="layui-col-md8">
+               <h2>菜单权限管理</h2>
+               <div class="layui-form">
+                    <div id="xtree1" class="xtree_contianer"></div>
+               </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    layui.use(['form','jquery','layer'], function () {
+            var form = layui.form;
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            //1、最基础的用法 - 直接绑定json
+            var xtree1 = new layuiXtree({
+                elem: 'xtree1'   //(必填) 放置xtree的容器，样式参照 .xtree_contianer
+                , form: form     //(必填) layui 的 from
+                , data: 'http://127.0.0.1:8080/admin/getMenus'   //(必填) json数据接口
+                , click: function (data) {  //节点选中状态改变事件监听，全选框有自己的监听事件
+                    // console.log(data.elem); //得到checkbox原始DOM对象
+                    // console.log(data.elem.checked); //开关是否开启，true或者false
+                    // console.log(data.value); //开关value值，也可以通过data.elem.value得到
+                    // console.log(data.othis); //得到美化后的DOM对象
+                }
+            });
+            $("ul>li").on("click",function(){
+                
+                let paramsMenus_ID=[]
+                var oCks = xtree1.GetAllCheckBox(); //这是方法,获得所有多选框
+                for (var i = 0; i < oCks.length; i++) {
+                    if($(oCks[i]).prop("checked")){
+                    paramsMenus_ID.push(oCks[i].value);
+                    }
+                }
+                let role_id = $(this).data("role_id");
+                if(paramsMenus_ID.length==0 || role_id==undefined){
+                    layer.msg("请先勾选菜单");
+                    return;
+                }
+                $(this).addClass("active").siblings().removeClass("active");
+
+                $.ajax({
+                    url:"http://127.0.0.1:8080/admin/addOrUpdate",
+                    data:{role_id:role_id,menus:paramsMenus_ID},
+                    type:"post",
+                    dataType:"json"
+                }).then((res)=>{
+                    console.log(res);
+                });
+
+            })
+        });
+</script>

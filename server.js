@@ -19,8 +19,8 @@ app.use(
       return uuid.v1();
     },
     secret: "cs",
-    maxAge:1000*60*20
-    //设置 session 的有效时间，单位毫秒
+    maxAge:1000*60*60
+    //设置 session的有效时间，单位毫秒
   })
 );
 app.use(logger("dev"));
