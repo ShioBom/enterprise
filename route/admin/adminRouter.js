@@ -1,5 +1,4 @@
 import express from 'express';
-import dbhelper from '../../lib/dbhelper';
 import indexController from '../../controller/indexController';
 import menuController from '../../controller/menuController';
 import limitsController from "../../controller/limitsController";

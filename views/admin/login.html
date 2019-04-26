@@ -14,7 +14,7 @@
     <!-- main -->
     <div class="main">
         <h1>
-            后台登录系统
+            欢迎登陆
         </h1>
         <form>
             <input type="text" name="u_name" placeholder="用户名" required="">
@@ -35,8 +35,10 @@
                 data: $('form').serialize(),
                 dataType: "json",
                 success: function (res) {
-                    if(res.status===1){
+                    if(res.status===1 && res.result[0].r_id!==0){
                         location.href='./index';
+                    }else{
+                        location.href='http://localhost:8080?flag=1'
                     }
                 }
             });

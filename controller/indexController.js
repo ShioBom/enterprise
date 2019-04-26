@@ -41,11 +41,11 @@ module.exports = {
             dbhelper.query(loginSQL,params,function(err,result){
                 if(result.length>=1){
                     req.session['userinfo'] = result;
-                    res.json({ msg: "登录成功", status: 1 });
+                    res.json({ msg: "登录成功", status: 1,result });
                 }else{
-                    res.json({ msg: "登录失败", status:0})
+                    res.json({ msg: "登录失败", status:0});
                 }
             })
         };
-    }
+  }
 };

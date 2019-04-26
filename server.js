@@ -7,7 +7,16 @@ import logger from 'morgan';
 import uuid from 'uuid';
 
 const app = express();
-app.listen(8080);
+app.listen(3002,()=>{
+  console.log("服务器启动成功，端口号3002");
+});
+//解决跨域问题
+app.all('*', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); //项目上线后改成页面的地址
+  res.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  next();
+});
 app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({extended:true,limit:"500mb"}));
 app.use(bodyParser.json());
@@ -34,3 +43,4 @@ app.set("views","./views");
 app.engine("html",consolidate.ejs);
 
 app.use("/admin", require("./route/admin/adminRouter"));
+app.use("/client", require("./route/client/clientRouter"));
