@@ -93,7 +93,7 @@ module.exports = {
     return function (req, res, next) {
       let params =[req.body.m_id,req.body.c_id];
       let sql =
-        "SELECT `ch_time`,`ch_lang`,`name` FROM chamber_movie INNER JOIN chamber ON chamber_movie.id=chamber.id AND m_id=? AND c_id=?";
+        "SELECT `ch_time`,`ch_lang`,`name`,chamber.id FROM chamber_movie INNER JOIN chamber ON chamber_movie.id=chamber.id AND m_id=? AND c_id=?";
       dbhelper.query(sql, params, (err, result) => {
         if (!err) {
           res.json({ code: 1, result });
@@ -103,5 +103,49 @@ module.exports = {
         }
       });
     };
-  }
+  },
+  //根据影院id获取影院信息
+  getCinema: function () {
+    return function (req, res, next) {
+      let params = req.body.c_id;
+      let sql = "SELECT * FROM cinema WHERE c_id =?";
+      dbhelper.query(sql, params, (err, result) => {
+        if (!err) {
+          res.json({ code: 1, result });
+        } else {
+          res.json({ code: -1, msg: "数据获取失败" });
+          console.log(err);
+        }
+      });
+    };
+  },
+  //向数据库中添加订单信息
+  insertOrder:function() {
+    return function (req, res, next) {
+      let params=[];
+      req.body.seats.forEach(ele => {
+        let arr=[
+          req.body.u_id,
+          req.body.m_name,
+          req.body.time,
+          req.body.chamber,
+          req.body.cinema,
+          ele,
+          req.body.price
+        ];
+        params.push(arr);
+        console.log(params);
+      });
+      let sql =
+        "INSERT INTO orderform(`u_id`,`m_name`,`time`,`chamber`,`cinema`,`seat`,`price`) VALUES ?";
+      dbhelper.query(sql, [params], (err, result) => {
+        if (!err) {
+          res.json({ code: 1, msg:"订单建立成功" });
+        } else {
+          res.json({ code: -1, msg: "数据获取失败" });
+          console.log(err);
+        }
+      });
+    };
+  },
 };

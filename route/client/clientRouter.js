@@ -9,4 +9,6 @@ clientRouter.post("/getReviews", movieController.getReviews());
 clientRouter.post("/getCinemas", movieController.getCinemas());
 clientRouter.post("/getCinemaMovie", movieController.getCinemaMovie());
 clientRouter.post("/getChambers", movieController.getChambers());
+clientRouter.post("/getCinema", movieController.getCinema());
+clientRouter.post("/insertOrder", movieController.insertOrder());
 

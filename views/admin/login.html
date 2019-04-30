@@ -35,10 +35,12 @@
                 data: $('form').serialize(),
                 dataType: "json",
                 success: function (res) {
+                    console.log(res);
                     if(res.status===1 && res.result[0].r_id!==0){
                         location.href='./index';
                     }else{
-                        location.href='http://localhost:8080?flag=1'
+                        console.log(res.result);
+                        location.href=`http://localhost:8080?u_id=${res.result[0].u_id}`;
                     }
                 }
             });
