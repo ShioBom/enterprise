@@ -47,7 +47,7 @@ module.exports = {
   getReviews: function() {
     return function(req, res, next) {
       let sql =
-        "SELECT userinfo.u_id,`u_name`,`u_img`,`r_date`,`r_content` FROM review JOIN userinfo ON review.u_id = userinfo.u_id WHERE m_id=?;";
+        "SELECT userinfo.u_id,`u_name`,`u_img`,`r_date`,`r_content`,`r_grade` FROM review JOIN userinfo ON review.u_id = userinfo.u_id WHERE m_id=?;";
       dbhelper.query(sql, req.body.m_id, (err, result) => {
         if (!err) {
           res.json({ code: 1, result });
@@ -93,7 +93,7 @@ module.exports = {
     return function(req, res, next) {
       let params = [req.body.m_id, req.body.c_id];
       let sql =
-        "SELECT `ch_time`,`ch_lang`,`name`,chamber.id FROM chamber_movie INNER JOIN chamber ON chamber_movie.id=chamber.id AND m_id=? AND c_id=?";
+        "SELECT `ch_time`,`ch_lang`,`name`,chamber.id,chamber_id FROM chamber_movie INNER JOIN chamber ON chamber_movie.id=chamber.id AND m_id=? AND c_id=?";
       dbhelper.query(sql, params, (err, result) => {
         if (!err) {
           res.json({ code: 1, result });
@@ -264,5 +264,53 @@ module.exports = {
       });
     };
   },
-  //根据用户查询所有的订单数据
+  //添加评论数据
+  addReview:function(){
+    return function (req, res, next) {
+      let params = [req.body.r_content, req.body.u_id,req.body.m_id,req.body.r_grade];
+      let sql =
+        "INSERT INTO review(`r_content`,`u_id`,`m_id`,`r_grade`) VALUES(?,?,?,?)";
+      dbhelper.query(sql, params, (err, result) => {
+        if (!err) {
+          console.log(result);
+          res.json({ code: 1, result });
+        } else {
+          res.json({ code: -1, msg: "评论发布失败" });
+          console.log(err);
+        }
+      });
+    };
+  },
+  //获取该电影的平均评分
+  getAvgGrade: function() {
+    return function (req, res, next) {
+      let params = req.body.m_id;
+      let sql =
+        "SELECT AVG(r_grade) AS avgGrade,COUNT(DISTINCT u_id) AS userNum,m_id FROM review WHERE m_id=?;";
+      dbhelper.query(sql, params, (err, result) => {
+        if (!err) {
+          console.log(result);
+          res.json({ code: 1, msg: "查询平均评分成功",result:result[0] });
+        } else {
+          res.json({ code: -1, msg: "查询平均评分失败" });
+          console.log(err);
+        }
+      });
+    };
+  },
+  //根据电影名搜索电影
+  searchMovie: function () {
+    return function (req, res, next) {
+      let params = req.body.text;
+      let sql ="SELECT * FROM movie WHERE m_name LIKE ?";
+      dbhelper.query(sql, params, (err, result) => {
+        if (!err) {
+          res.json({ code: 1, msg: "搜索电影成功", result });
+        } else {
+          res.json({ code: -1, msg: "搜索电影失败" });
+          console.log(err);
+        }
+      });
+    };
+  }
 };

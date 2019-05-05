@@ -15,4 +15,11 @@ clientRouter.post("/queryOrderByUser", movieController.queryOrderByUser());
 clientRouter.post("/seatIsBought", movieController.seatIsBought());
 clientRouter.post("/cancelOrderByUser", movieController.cancelOrderByUser());
 clientRouter.post("/checkoutByUser", movieController.checkoutByUser());
+clientRouter.post("/addReview", movieController.addReview());
+clientRouter.post("/getAvgGrade", movieController.getAvgGrade());
+clientRouter.post("/searchMovie", movieController.searchMovie());
+
+
+
+
 
