@@ -13,53 +13,53 @@ layui.use(['table', 'jquery', 'layer'], function () {
         title: '用户数据表',
         cols: [
             [{
-                    checkbox: true,
-                    fixed: true
-                },
-                {
-                    field: 'm_id',
-                    title: 'ID',
-                    width: 80,
-                    fixed: 'left',
-                    unresize: true,
-                    sort: true,
-                }, {
-                    field: 'm_name',
-                    title: '菜单名',
-                    edit: 'text'
-                }, {
-                    field: 'm_link',
-                    title: '菜单链接',
-                    edit: 'text'
-                }, {
-                    field: 'm_status2',
-                    title: '菜单状态',
-                    align: 'center',
-                    templet: '#checkboxTpl',
-                    unresize: true
-                }, {
-                    field: 'm_num',
-                    title: '菜单编号',
-                    edit: 'text',
-                }, {
-                    field: 'm_father',
-                    title: '父级菜单',
-                    edit: 'text',
-                }, {
-                    field: 'm_icon',
-                    title: '菜单图标',
-                    edit: 'text',
-                }, {
-                    field: 'm_order',
-                    title: '菜单排序',
-                    width: 100,
-                    sort: true
-                }, {
-                    fixed: 'right',
-                    align: 'center',
-                    unresize: true,
-                    toolbar: '#barDemo'
-                }
+                checkbox: true,
+                fixed: true
+            },
+            {
+                field: 'm_id',
+                title: 'ID',
+                width: 80,
+                fixed: 'left',
+                unresize: true,
+                sort: true,
+            }, {
+                field: 'm_name',
+                title: '菜单名',
+                edit: 'text'
+            }, {
+                field: 'm_link',
+                title: '菜单链接',
+                edit: 'text'
+            }, {
+                field: 'm_status2',
+                title: '菜单状态',
+                align: 'center',
+                templet: '#checkboxTpl',
+                unresize: true
+            }, {
+                field: 'm_num',
+                title: '菜单编号',
+                edit: 'text',
+            }, {
+                field: 'm_father',
+                title: '父级菜单',
+                edit: 'text',
+            }, {
+                field: 'm_icon',
+                title: '菜单图标',
+                edit: 'text',
+            }, {
+                field: 'm_order',
+                title: '菜单排序',
+                width: 100,
+                sort: true
+            }, {
+                fixed: 'right',
+                align: 'center',
+                unresize: true,
+                toolbar: '#barDemo'
+            }
             ]
         ],
         page: true,
@@ -162,7 +162,7 @@ layui.use(['table', 'jquery', 'layer'], function () {
     //监听锁定操作
     form.on('checkbox(lockDemo)', function (obj) {
         //监听行单双击事件
-        this.value=this.value=="close"?"on":"close";
+        this.value = this.value == "close" ? "on" : "close";
         console.log(this.value);
         table.on('row(test)', function (obj) {
             console.log(obj.data) //得到当前行数据
@@ -171,7 +171,7 @@ layui.use(['table', 'jquery', 'layer'], function () {
                 url: "http://127.0.0.1:8080/admin/updateMenuStatus",
                 data: {
                     m_status: obj.value,
-                    m_id:obj.data.m_id
+                    m_id: obj.data.m_id
                 },
                 dataType: "json",
                 success: function (response) {
@@ -182,5 +182,5 @@ layui.use(['table', 'jquery', 'layer'], function () {
             });
         });
     });
-       
+
 });

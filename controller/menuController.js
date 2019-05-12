@@ -13,6 +13,7 @@ module.exports={
             let params = 'tangyu';
             dbhelper.query(queryMenuSql, params, function (err, result) {
                 if (!err) {
+                    
                     let obj = {
                         "status": 200,
                         "message": "",
