@@ -1,10 +1,10 @@
 import dbhelper from "../lib/dbhelper";
-
+let fs= require("fs");
 module.exports = {
   //拿到所有的电影数据
   getMovies: function() {
     return function(req, res, next) {
-      let sql = "SELECT * FROM movie LIMIT 8;";
+      let sql = "SELECT * FROM movie where m_status=1;";
       dbhelper.query(sql, [], (err, result) => {
         if (!err) {
           res.json({ code: 1, result });
@@ -29,7 +29,65 @@ module.exports = {
       });
     };
   },
-  //根据电影id获取数据
+  uploadMovie: function () {
+    return function (req, res, next) {
+      var file = req.file;
+      console.log(file);
+        var pathName =
+          "public/upload/" +
+          Math.random()
+            .toString()
+            .split(".")[1] +
+          Date.now() +
+          "." +
+          file.originalname.split(".")[1];
+        fs.rename(req.file.path, pathName, function (err) {
+          if (err) {
+            throw err;
+          }
+        });
+      res.json({ code: 1, path: pathName.replace("public", "localhost:3002")});
+    };
+  },
+  addMovie: function () {
+    return function (req, res, next) {
+      let params=[
+        req.body.m_name,
+        req.body.m_time,
+        req.body.m_intro,
+        parseFloat(req.body.m_price),
+        req.body.m_type,
+        req.body.m_length,
+        req.body.m_picture,
+      ]
+      let sql = "INSERT INTO movie(`m_name`, `m_time`, `m_intro`, `m_price`, `m_type`, `m_length`, `m_picture`) VALUES(?,?,?,?,?,?,?);";
+      dbhelper.query(sql, params, (err, result) => {
+        if (!err) {
+          res.json({ code: 1, result });
+        } else {
+          res.json({ code: -1, msg: "数据获取失败" });
+          console.log(err);
+        }
+      });
+    };
+  },
+  delMovie: function () {
+    return function (req, res, next) {
+      let sql = "UPDATE movie SET m_status=0 WHERE m_id=?;";
+      console.log(req.body.m_id);
+      dbhelper.query(sql, req.body.m_id, (err, result) => {
+        if (!err) {
+          if(result.affectedRows>=1){
+            res.json({ code: 1, msg: "电影删除成功" });
+          }
+        } else {
+          res.json({ code: -1, msg: "数据库操作失败" });
+          console.log(err);
+        }
+      });
+    };
+  },
+  //根据电影id获取演员数据
   getActors: function() {
     return function(req, res, next) {
       let sql = "SELECT * FROM actor WHERE m_id=?;";

@@ -25,7 +25,6 @@ adminRouter.get("/power_limits", limitsController.powerLimits());
 adminRouter.get("/getMenus", limitsController.getMenus());
 //添加或者修改菜单权限
 adminRouter.post("/addOrUpdate", limitsController.addOrUpdate());
-
 //渲染menu内容
 adminRouter.get("/menu", menuController.showMenu());
 //menu接口,查询menu数据
@@ -44,7 +43,6 @@ adminRouter.post("/addMenuData", menuController.addMenuData());
 adminRouter.get("/login",indexController.showLogin());
 //登录接口
 adminRouter.post("/login",indexController.Login());
-
 adminRouter.get("/order", orderController.showOrder());
 adminRouter.post("/getorder", orderController.getOrder());
 adminRouter.post("/deleteOrder", orderController.deleteOrder());
