@@ -21,7 +21,7 @@ layui.define(['jquery'],function (exports) {
                 //新增一个Tab项
                 element.tabAdd('demo', {
                     title: tabTitle, //用于演示 ,
-                    content: '<iframe id="mainIframe"  height="' + mainHeight + 'px" width="100%" src="' + tabURL + '" frameborder="0" scrolling="no" ></iframe>',
+                    content: '<iframe id="mainIframe"  height="1200px" width="100%" src="' + tabURL + '" frameborder="0"  scrolling="no" ></iframe>',
                     id: tabId //实际使用一般是规定好的id，这里以时间戳模拟下
                 });
                 element.tabChange('demo', tabId); //切换到

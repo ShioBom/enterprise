@@ -40,7 +40,7 @@
             var xtree1 = new layuiXtree({
                 elem: 'xtree1'   //(必填) 放置xtree的容器，样式参照 .xtree_contianer
                 , form: form     //(必填) layui 的 from
-                , data: 'http://127.0.0.1:8080/admin/getMenus'   //(必填) json数据接口
+                , data: 'http://127.0.0.1:3002/admin/getMenus'   //(必填) json数据接口
                 , click: function (data) {  //节点选中状态改变事件监听，全选框有自己的监听事件
                     // console.log(data.elem); //得到checkbox原始DOM对象
                     // console.log(data.elem.checked); //开关是否开启，true或者false
@@ -65,7 +65,7 @@
                 $(this).addClass("active").siblings().removeClass("active");
 
                 $.ajax({
-                    url:"http://127.0.0.1:8080/admin/addOrUpdate",
+                    url:"http://127.0.0.1:3002/admin/addOrUpdate",
                     data:{role_id:role_id,menus:paramsMenus_ID},
                     type:"post",
                     dataType:"json"

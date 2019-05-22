@@ -1,6 +1,21 @@
 import dbhelper from "../lib/dbhelper";
 let fs= require("fs");
+var path = require('path');
 module.exports = {
+  //根据id查询用户头像
+  getPortrait:function () {
+    return function (req, res, next) {
+      let sql = "SELECT u_img FROM userinfo WHERE u_id=?;";
+      dbhelper.query(sql, req.body.u_id, (err, result) => {
+        if (!err) {
+          res.json({ code: 1, msg:"头像数据获取成功",img:result[0].u_img });
+        } else {
+          res.json({ code: -1, msg: "数据获取失败" });
+          console.log(err);
+        }
+      });
+    };
+  },
   //拿到所有的电影数据
   getMovies: function() {
     return function(req, res, next) {
@@ -29,41 +44,52 @@ module.exports = {
       });
     };
   },
+  //上传电影图片
   uploadMovie: function () {
     return function (req, res, next) {
       var file = req.file;
       console.log(file);
-        var pathName =
-          "public/upload/" +
+        var fileName =
           Math.random()
             .toString()
             .split(".")[1] +
           Date.now() +
           "." +
           file.originalname.split(".")[1];
-        fs.rename(req.file.path, pathName, function (err) {
-          if (err) {
-            throw err;
-          }
+      var sourceFile = "public/upload/" + fileName;
+      fs.rename(req.file.path, sourceFile, function (err) {
+        if (err) {
+          throw err;
+        }
+      });   
+      console.log(sourceFile);
+      var destFile = path.join("d:\\Code\\junjia\\movieTicket\\static\\img\\movies\\", fileName);
+      fs.rename(sourceFile, destFile, function (err) {
+        if (err) throw err;
+        fs.stat(destFile, function (err, stats) {
+          if (err) throw err;
+          console.log('stats: ' + JSON.stringify(stats));
         });
-      res.json({ code: 1, path: pathName.replace("public", "localhost:3002")});
+      });   
+      res.json({ code: 1, path: `/static/img/movies/${fileName}`});
     };
   },
+  //添加电影数据
   addMovie: function () {
     return function (req, res, next) {
       let params=[
         req.body.m_name,
-        req.body.m_time,
+        // req.body.m_time,
         req.body.m_intro,
-        parseFloat(req.body.m_price),
+        req.body.m_price,
         req.body.m_type,
         req.body.m_length,
         req.body.m_picture,
       ]
-      let sql = "INSERT INTO movie(`m_name`, `m_time`, `m_intro`, `m_price`, `m_type`, `m_length`, `m_picture`) VALUES(?,?,?,?,?,?,?);";
+      let sql = "INSERT INTO movie(`m_name`, `m_intro`, `m_price`, `m_type`, `m_length`, `m_picture`) VALUES(?,?,?,?,?,?);";
       dbhelper.query(sql, params, (err, result) => {
         if (!err) {
-          res.json({ code: 1, result });
+          res.json({ code: 1, msg: "电影添加成功", result });
         } else {
           res.json({ code: -1, msg: "数据获取失败" });
           console.log(err);
@@ -71,6 +97,23 @@ module.exports = {
       });
     };
   },
+  //根据用户id查询票据
+  getOrderByID: function () {
+    return function (req, res, next) {
+      let queryMenuSql =
+        "SELECT * FROM orderform WHERE u_id=?;";
+      dbhelper.query(queryMenuSql, req.body.u_id, function (err, result) {
+        if (!err) {
+            res.json({
+              status: 200,
+              message: "查询票据信息成功",
+              result
+            });
+        }
+      })
+    }
+  },
+  //删除电影
   delMovie: function () {
     return function (req, res, next) {
       let sql = "UPDATE movie SET m_status=0 WHERE m_id=?;";

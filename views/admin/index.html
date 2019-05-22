@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="./../../admin/layui/css/layui.css">
     <script src="./../../admin/layui/layui.js"></script>
     <script src="./../../admin/js/index.js"></script>
+    <style>
+        .layui-body{
+            overflow: hidden;
+            overflow-y:auto;
+           
+        }
+    </style>
 </head>
 
 <body class="layui-layout-body">
@@ -51,7 +58,7 @@
         </div>
         <div class="layui-body">
             <!-- 内容主体区域 -->
-            <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+            <div class="layui-tab" lay-filter="demo"  lay-allowclose="false">
                 <ul class="layui-tab-title">
                 </ul>
                 <div class="layui-tab-content">
